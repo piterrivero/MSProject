@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.disc.service.model.Disc;
+import com.disc.service.entity.Disc;
 import com.disc.service.service.DiscService;
 
 @RestController
@@ -43,6 +43,15 @@ public class DiscController {
 	public ResponseEntity<Disc> saveBand(@RequestBody Disc disc){
 		Disc newDisc = discService.save(disc);
 		return ResponseEntity.ok(newDisc);
+	}
+	
+	@GetMapping("/band/{idBand}")
+	public ResponseEntity<List<Disc>> getBandsById(@PathVariable("idBand") long idBand){
+		List<Disc> disc = discService.getDiscsByIdBand(idBand);
+		if (disc == null) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(disc);
 	}
 	
 }

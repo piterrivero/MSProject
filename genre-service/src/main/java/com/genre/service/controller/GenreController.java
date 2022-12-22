@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.genre.service.model.Genre;
+import com.genre.service.entity.Genre;
 import com.genre.service.service.GenreService;
 
 @RestController

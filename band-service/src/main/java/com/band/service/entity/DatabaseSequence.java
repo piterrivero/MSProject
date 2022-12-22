@@ -1,4 +1,4 @@
-package com.disc.service.model;
+package com.band.service.entity;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -6,18 +6,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.Getter;
 import lombok.Setter;
 
-@Document
+@Document(collection = "database_sequences")
 @Getter
 @Setter
-public class Disc {
-	
+public class DatabaseSequence {
+
 	@Id
-	private int id;
-	
-	private int idBand;
+    private String id;
 
-	private String title;
+    private long seq;
 	
-	private String year;
-
 }
