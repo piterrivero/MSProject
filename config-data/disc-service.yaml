@@ -1,9 +1,9 @@
 server:
-  port: 8001
+  port: 8002
 
 spring:
   data:
     mongodb:
       host: localhost
-      port: 27001
-      database: band  
+      port: 27002
+      database: disc
