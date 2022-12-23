@@ -40,7 +40,7 @@ public class DiscController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Disc> saveBand(@RequestBody Disc disc){
+	public ResponseEntity<Disc> saveDisc(@RequestBody Disc disc){
 		Disc newDisc = discService.save(disc);
 		return ResponseEntity.ok(newDisc);
 	}
