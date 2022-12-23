@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.genre.service.entity.Genre;
 import com.genre.service.service.GenreService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 @RequestMapping("/genre")
 public class GenreController {
@@ -22,7 +25,8 @@ public class GenreController {
 	private GenreService genreService;
 	
 	@GetMapping
-	public ResponseEntity<List<Genre>> listBands(){
+	public ResponseEntity<List<Genre>> listGenres(){
+		log.info("Have been called the listGenres method");
 		List<Genre> genres = genreService.getAll();
 		if (genres.isEmpty()) {
 			return ResponseEntity.noContent().build();
@@ -31,7 +35,8 @@ public class GenreController {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Genre> getBand(@PathVariable("id") int id){
+	public ResponseEntity<Genre> getGenre(@PathVariable("id") int id){
+		log.info("Have been called the getGenre method");
 		Genre genre = genreService.getBandById(id);
 		if (genre == null) {
 			return ResponseEntity.notFound().build();
@@ -40,7 +45,8 @@ public class GenreController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Genre> saveBand(@RequestBody Genre genre){
+	public ResponseEntity<Genre> saveGenre(@RequestBody Genre genre){
+		log.info("Have been called the saveGenre method");
 		Genre newGenre = genreService.save(genre);
 		return ResponseEntity.ok(newGenre);
 	}

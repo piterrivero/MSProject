@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.disc.service.entity.Disc;
 import com.disc.service.service.DiscService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 @RequestMapping("/disc")
 public class DiscController {
@@ -23,6 +26,7 @@ public class DiscController {
 	
 	@GetMapping
 	public ResponseEntity<List<Disc>> listBands(){
+		log.info("Have been called the listBands method");
 		List<Disc> discs = discService.getAll();
 		if (discs.isEmpty()) {
 			return ResponseEntity.noContent().build();
@@ -32,6 +36,7 @@ public class DiscController {
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<Disc> getBand(@PathVariable("id") int id){
+		log.info("Have been called the getBand method");
 		Disc disc = discService.getBandById(id);
 		if (disc == null) {
 			return ResponseEntity.notFound().build();
@@ -41,12 +46,14 @@ public class DiscController {
 	
 	@PostMapping
 	public ResponseEntity<Disc> saveDisc(@RequestBody Disc disc){
+		log.info("Have been called the saveDisc method");
 		Disc newDisc = discService.save(disc);
 		return ResponseEntity.ok(newDisc);
 	}
 	
 	@GetMapping("/band/{idBand}")
 	public ResponseEntity<List<Disc>> getBandsById(@PathVariable("idBand") long idBand){
+		log.info("Have been called the getBandsById method");
 		List<Disc> disc = discService.getDiscsByIdBand(idBand);
 		if (disc == null) {
 			return ResponseEntity.notFound().build();
