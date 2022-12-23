@@ -3,6 +3,7 @@ package com.band.service.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.band.service.entity.Band;
 import com.band.service.service.BandService;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import model.Disc;
 import model.Genre;
 
@@ -48,25 +50,40 @@ public class BandController {
 		return ResponseEntity.ok(newBand);
 	}
 	
+	// Communicating with other micro services
+	
+	@CircuitBreaker(name = "discCB",fallbackMethod = "fallBackSaveDisc")
 	@PostMapping("/disc/{idBand}")
 	public ResponseEntity<Disc> saveDisc(@PathVariable("idBand") int idBand, @RequestBody Disc disc){
 		disc.setIdBand(idBand);
 		Disc newDisc = bandService.saveDisc(disc);
 		return ResponseEntity.ok(newDisc);
 	} 
-	
-	@GetMapping("/genre/{idGenre}")
-	public ResponseEntity<Genre> getGenreById(@PathVariable("idGenre") long idGenre){
-		Genre genre = bandService.getGenreById(idGenre);
-		return ResponseEntity.ok(genre);
+
+	public ResponseEntity<Disc> fallBackSaveDisc(@PathVariable("idBand") int idBand, @RequestBody Disc disc, RuntimeException excepcion){
+		return new ResponseEntity("The band can not be saved in this moment, please try later", HttpStatus.OK);
 	}
 	
+	@CircuitBreaker(name = "discCB",fallbackMethod = "fallBackGetDiscsByIdBand")
 	@GetMapping("/disc/{idBand}")
 	public ResponseEntity<List<Disc>> getDiscsByIdBand(@PathVariable("idBand") long idBand){
 		List<Disc> discs = bandService.getDiscByIdBand(idBand);
 		return ResponseEntity.ok(discs);
 	}
 	
+	public ResponseEntity<List<Disc>> fallBackGetDiscsByIdBand(@PathVariable("idBand") long idBand, RuntimeException excepcion){
+		return new ResponseEntity("Right now the disc can not be found, please try later", HttpStatus.OK);
+	}
 	
+	@CircuitBreaker(name = "genreCB",fallbackMethod = "fallBackGetGenreById")
+	@GetMapping("/genre/{idGenre}")
+	public ResponseEntity<Genre> getGenreById(@PathVariable("idGenre") long idGenre){
+		Genre genre = bandService.getGenreById(idGenre);
+		return ResponseEntity.ok(genre);
+	}
+	
+	public ResponseEntity<Genre> fallBackGetGenreById(@PathVariable("idGenre") long idGenre, RuntimeException excepcion){
+		return new ResponseEntity("Right now the genre can not be found, please try later", HttpStatus.OK);
+	}
 	
 }
