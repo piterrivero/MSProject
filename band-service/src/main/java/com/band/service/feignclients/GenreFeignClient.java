@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import model.Genre;
 
-@FeignClient(name = "genre-service",url = "http://localhost:8003")
+@FeignClient(name = "genre-service")
 @RequestMapping("/genre")
 public interface GenreFeignClient {
 

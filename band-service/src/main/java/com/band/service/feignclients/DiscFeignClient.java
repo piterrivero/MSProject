@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import model.Disc;
 
-@FeignClient(name = "disc-service",url = "http://localhost:8002")
+@FeignClient(name = "disc-service")
 @RequestMapping("/disc")
 public interface DiscFeignClient {
 
